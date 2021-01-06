@@ -12,8 +12,8 @@ const useStyles = makeStyles({
 		justifyContent: 'center',
 	},
 	indicator: {
-		height: '50%',
-		width: '50%',
+		height: '15%',
+		width: '15%',
 		alignItems: 'center',
 		justifyContent: 'center',
 	},

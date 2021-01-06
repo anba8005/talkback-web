@@ -37,7 +37,6 @@ export class IntercomStore {
 		_audioBridge.onList((participants) =>
 			runInAction(() => {
 				this._participants = participants;
-				console.log(participants);
 			}),
 		);
 	}
@@ -56,6 +55,10 @@ export class IntercomStore {
 
 	public get error() {
 		return this._error;
+	}
+
+	public get participants() {
+		return this._participants;
 	}
 
 	@action

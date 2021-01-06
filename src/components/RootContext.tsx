@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'preact/hooks';
 import { IntercomStore } from '../stores/IntercomStore';
 import { OffairStore } from '../stores/OffairStore';
 import { createRootStore } from '../stores/RootStore';
+import { SettingsStore } from '../stores/SettingsStore';
 import { TallyStore } from '../stores/TallyStore';
 
 // context
@@ -11,6 +12,7 @@ export interface Root {
 	intercom: IntercomStore;
 	offair: OffairStore;
 	tally: TallyStore;
+	settings: SettingsStore;
 	hydrate: () => Promise<void>;
 }
 
@@ -23,6 +25,7 @@ function getRoot() {
 			intercom: rootStore.intercom,
 			offair: rootStore.offair,
 			tally: rootStore.tally,
+			settings: rootStore.settings,
 			hydrate: () => rootStore.hydrate(),
 		};
 	}

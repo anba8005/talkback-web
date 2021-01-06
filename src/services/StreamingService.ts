@@ -11,6 +11,8 @@ export class StreamingService extends AbstractJanusService<StreamingPlugin> {
 	private _streamEvent = new SimpleEventDispatcher<MediaStream | null>();
 	private _messageEvent = new SimpleEventDispatcher<string>();
 
+	private _streamingEnabled = true;
+
 	constructor(sessionService: SessionService) {
 		super(sessionService, StreamingPluginName);
 	}
@@ -23,6 +25,14 @@ export class StreamingService extends AbstractJanusService<StreamingPlugin> {
 		return this._messageEvent.asEvent().subscribe(handler);
 	}
 
+	public setStreamingEnabled(enabled: boolean) {
+		this._streamingEnabled = enabled;
+	}
+
+	protected shouldCreatePlugin(): boolean {
+		return true;
+	}
+
 	protected async afterCreatePlugin() {
 		if (this.plugin && this.roomId) {
 			//
@@ -31,11 +41,13 @@ export class StreamingService extends AbstractJanusService<StreamingPlugin> {
 				this._streamEvent.dispatch(event.streams[0]);
 			});
 			//
+			const options = this._streamingEnabled
+				? {}
+				: { offer_video: false, offer_audio: false };
+			//
 			try {
-				const result = await this.plugin.connect(this.roomId);
-				// console.log(result);
-				const a = await this.plugin.start();
-				// console.log(a);
+				await this.plugin.connect(this.roomId, options);
+				await this.plugin.start();
 			} catch (e) {
 				this.errorEvent.dispatch(e);
 				this._streamEvent.dispatch(null);
@@ -43,5 +55,7 @@ export class StreamingService extends AbstractJanusService<StreamingPlugin> {
 		}
 	}
 
-	protected beforeDestroyPlugin() {}
+	protected beforeDestroyPlugin() {
+		//
+	}
 }

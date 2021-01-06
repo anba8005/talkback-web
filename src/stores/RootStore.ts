@@ -40,22 +40,27 @@ export class RootStore {
 		return this._tally;
 	}
 
+	public get settings() {
+		return this._settings;
+	}
+
 	public async hydrate() {
 		// load settings
 		await Promise.allSettled([
 			this._trunkHelper.createStoreTrunk(
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-				{ settings: this._settings.settings },
+				{ settings: this.settings.settings },
 				'settingsStore',
 			),
 		]);
 		// update service settings
-		const { settings } = this._settings;
-		this._audioBridgeService.setRoomId(settings.roomId);
-		this._streamingService.setRoomId(settings.roomId);
-		this._audioBridgeService.setDisplayName(settings.name);
+		this._audioBridgeService.setEnabled(this.settings.intercom);
+		this._audioBridgeService.setRoomId(this.settings.roomId);
+		this._audioBridgeService.setDisplayName(String(this.settings.channel));
+		this._streamingService.setStreamingEnabled(this.settings.offair);
+		this._streamingService.setRoomId(this.settings.roomId);
 		// connect
-		await this._sessionService.connect(settings.url);
+		await this._sessionService.connect(this.settings.url);
 	}
 }
 

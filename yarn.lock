@@ -2441,7 +2441,7 @@ clone@^1.0.2:
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
 
-clsx@^1.0.4:
+clsx@^1.0.4, clsx@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
@@ -5257,9 +5257,10 @@ isstream@~0.1.2:
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
 
-janus-gateway-js@anba8005/janus-gateway-js:
+janus-gateway-js@^2.0.2:
   version "2.0.2"
-  resolved "https://codeload.github.com/anba8005/janus-gateway-js/tar.gz/a8a6198f1b9fb4d39aba77b39fbbc7b98f516a3d"
+  resolved "https://registry.yarnpkg.com/janus-gateway-js/-/janus-gateway-js-2.0.2.tgz#8f1c5183dfad78c5e7f0dc02ae851f78b3d8d887"
+  integrity sha512-bHOycmW8jXD/gAUwjqGZwJE7mAJiCDIsx7J2AB8URswJBDPeRgpk4bS8maHbFF9KPOysd+e10fAosENnUrYvlQ==
   dependencies:
     bluebird "^3.0.0"
     eventemitter2 "^2.1.3"

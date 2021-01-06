@@ -1,4 +1,4 @@
-import { makeObservable, observable, runInAction } from 'mobx';
+import { action, makeObservable, observable, runInAction } from 'mobx';
 import { StreamingService } from '../services/StreamingService';
 
 export class OffairStore {
@@ -29,6 +29,11 @@ export class OffairStore {
 
 	public get muted() {
 		return this._muted;
+	}
+
+	@action
+	public setMuted(muted: boolean) {
+		this._muted = muted;
 	}
 
 	public get stream() {

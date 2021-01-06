@@ -44,11 +44,14 @@ export abstract class AbstractJanusService<T extends Plugin> {
 		return this._errorEvent.asEvent().subscribe(handler);
 	}
 
+	protected abstract shouldCreatePlugin(): boolean;
+
 	protected abstract afterCreatePlugin(): Promise<void>;
 
 	protected abstract beforeDestroyPlugin(): void;
 
 	private async _createPlugin(session: Session) {
+		if (!this.shouldCreatePlugin()) return;
 		try {
 			this._plugin = await session.attachPlugin<T>(this._name);
 		} catch (e) {

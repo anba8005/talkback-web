@@ -22,7 +22,8 @@
 	"dependencies": {
 		"@material-ui/core": "^4.11.2",
 		"@material-ui/icons": "^4.11.2",
-		"janus-gateway-js": "anba8005/janus-gateway-js",
+		"clsx": "^1.1.1",
+		"janus-gateway-js": "^2.0.2",
 		"mobx": "^6.0.4",
 		"mobx-react-lite": "^3.1.6",
 		"mobx-sync": "^3.0.0",

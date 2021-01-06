@@ -12,13 +12,15 @@ import { SessionService } from './SessionService';
 
 export interface Participant {
 	id: number;
-	name: string;
+	channel: number;
 }
 
 export class AudioBridgeService extends AbstractJanusService<AudioBridgePlugin> {
 	private _streamEvent = new SimpleEventDispatcher<MediaStream | null>();
 
 	private _listEvent = new SimpleEventDispatcher<Participant[]>();
+
+	private _enabled = true;
 
 	private _talk = false;
 
@@ -41,21 +43,23 @@ export class AudioBridgeService extends AbstractJanusService<AudioBridgePlugin> 
 	public setTalk(talk: boolean) {
 		this._talk = talk;
 		if (this.plugin) {
-			this.plugin
-				.configure({ muted: !talk })
-				.then(console.log)
-				.catch(console.log);
+			this.plugin.configure({ muted: !talk }).catch(console.log);
 		}
 	}
 
 	public setDisplayName(displayName: string) {
 		this._displayName = displayName;
 		if (this.plugin) {
-			this.plugin
-				.configure({ display: displayName })
-				.then(console.log)
-				.catch(console.log);
+			this.plugin.configure({ display: displayName }).catch(console.log);
 		}
+	}
+
+	public setEnabled(enabled: boolean) {
+		this._enabled = enabled;
+	}
+
+	protected shouldCreatePlugin(): boolean {
+		return this._enabled;
 	}
 
 	protected async afterCreatePlugin() {
@@ -81,7 +85,7 @@ export class AudioBridgeService extends AbstractJanusService<AudioBridgePlugin> 
 					video: false,
 				});
 				//
-				await this.plugin.offerStream(stream, null, { muted: this._talk });
+				await this.plugin.offerStream(stream, null, { muted: !this._talk });
 			} catch (e) {
 				this.errorEvent.dispatch(e);
 				this._streamEvent.dispatch(null);
@@ -89,7 +93,9 @@ export class AudioBridgeService extends AbstractJanusService<AudioBridgePlugin> 
 		}
 	}
 
-	protected beforeDestroyPlugin(): void {}
+	protected beforeDestroyPlugin(): void {
+		// noop
+	}
 
 	private _processIncomingEvent(event: any) {
 		// joined
@@ -114,10 +120,10 @@ export class AudioBridgeService extends AbstractJanusService<AudioBridgePlugin> 
 		const participants: Participant[] = [];
 		//
 		this._participants.forEach((value, key) => {
-			participants.push({ id: key, name: value });
+			participants.push({ id: key, channel: Number(value) });
 		});
 		//
-		participants.push({ id: 0, name: this._displayName });
+		participants.push({ id: 0, channel: Number(this._displayName) });
 		//
 		this._listEvent.dispatch(participants);
 	}
