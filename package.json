@@ -7,7 +7,6 @@
 		"build": "preact build --no-prerender --brotli",
 		"serve": "sirv build --port 4000 --cors --single",
 		"analyze": "source-map-explorer 'build/*.js'",
-		"postbuild": "precompress -t br build/sw*js",
 		"postversion": "git push origin v$npm_package_version && git push origin master",
 		"dev": "preact watch --port 4000"
 	},
