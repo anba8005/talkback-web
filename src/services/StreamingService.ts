@@ -3,6 +3,7 @@ import {
 	ISimpleEventHandler,
 	SimpleEventDispatcher,
 } from 'strongly-typed-events';
+import { getRandomIntInclusive } from '../utils/Helpers';
 import { StreamingPlugin, StreamingPluginName } from '../utils/Janus';
 import { AbstractJanusService } from './AbstractJanusService';
 import { SessionService } from './SessionService';
@@ -10,6 +11,8 @@ import { SessionService } from './SessionService';
 export class StreamingService extends AbstractJanusService<StreamingPlugin> {
 	private _streamEvent = new SimpleEventDispatcher<MediaStream | null>();
 	private _messageEvent = new SimpleEventDispatcher<string>();
+
+	private _channel?: RTCDataChannel;
 
 	private _streamingEnabled = true;
 
@@ -47,6 +50,9 @@ export class StreamingService extends AbstractJanusService<StreamingPlugin> {
 			//
 			try {
 				await this.plugin.connect(this.roomId, options);
+				//
+				this._setupDataChannel(this.plugin);
+				//
 				await this.plugin.start();
 			} catch (e) {
 				this.errorEvent.dispatch(e);
@@ -56,6 +62,27 @@ export class StreamingService extends AbstractJanusService<StreamingPlugin> {
 	}
 
 	protected beforeDestroyPlugin() {
+		this._channel?.close();
+	}
+
+	private _setupDataChannel(plugin: StreamingPlugin) {
+		const pc = plugin._pc;
 		//
+		this._channel = pc.createDataChannel(
+			String(getRandomIntInclusive(0, Number.MAX_SAFE_INTEGER - 1)),
+		);
+		//
+		pc.addEventListener('datachannel', (e) => {
+			e.channel.onmessage = (msg) => {
+				try {
+					const message = String(msg.data)
+						.replaceAll('\n', '')
+						.replaceAll('\r', '');
+					this._messageEvent.dispatch(message);
+				} catch (e) {
+					console.error(e);
+				}
+			};
+		});
 	}
 }

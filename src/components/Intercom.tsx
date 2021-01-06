@@ -5,11 +5,15 @@ import StreamingAudio from './StreamingAudio';
 import TalkButton from './TalkButton';
 
 export default observer(function Intercom() {
-	const { intercom } = useRootContext();
-	return (
-		<Fragment>
-			<StreamingAudio muted={intercom.muted} stream={intercom.stream} />
-			<TalkButton />
-		</Fragment>
-	);
+	const { intercom, settings } = useRootContext();
+	if (settings.intercom) {
+		return (
+			<Fragment>
+				<StreamingAudio muted={intercom.muted} stream={intercom.stream} />
+				<TalkButton />
+			</Fragment>
+		);
+	} else {
+		return null;
+	}
 });

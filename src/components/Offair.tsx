@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { h } from 'preact';
 import { useRootContext } from './RootContext';
@@ -15,17 +16,35 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: 'center',
 		display: 'flex',
 		zIndex: -1,
+		transition: theme.transitions.create(['border-color']),
+	},
+	border: {
+		border: '10px solid',
+	},
+	red: {
+		borderColor: 'red',
+	},
+	gray: {
+		borderColor: theme.palette.background.default,
 	},
 }));
 
 export default observer(function Offair() {
-	const { offair } = useRootContext();
+	const { offair, tally, settings } = useRootContext();
+	//
 	const classes = useStyles();
+	//
+	const activeClass = tally.isActive(settings.channel)
+		? classes.red
+		: classes.gray;
+	//
+	const borderClass = settings.intercom ? classes.border : undefined;
+	//
 	return (
-		<StreamingVideo
-			className={classes.fullscreen}
-			muted={offair.muted}
-			stream={offair.stream}
-		/>
+		<div className={clsx(classes.fullscreen, activeClass, borderClass)}>
+			{settings.offair && (
+				<StreamingVideo muted={offair.muted} stream={offair.stream} />
+			)}
+		</div>
 	);
 });

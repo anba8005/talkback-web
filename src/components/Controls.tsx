@@ -11,7 +11,7 @@ import { useRootContext } from './RootContext';
 const useStyles = makeStyles((theme) => ({
 	content: {
 		position: 'absolute',
-		bottom: 0,
+		bottom: theme.spacing(1),
 		left: 0,
 		right: 0,
 		display: 'flex',
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default observer(function Participants() {
+export default observer(function Controls() {
 	const { intercom, offair, settings } = useRootContext();
 	//
 	const handleIntercomToggle = () => {

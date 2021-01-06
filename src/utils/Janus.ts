@@ -6,6 +6,7 @@ const Janus = require('janus-gateway-js');
 export interface StreamingPlugin extends Plugin {
 	connect: (id: number, options: any) => Promise<any>;
 	start: () => Promise<any>;
+	_pc: RTCPeerConnection;
 }
 
 export interface AudioBridgePlugin extends Plugin {

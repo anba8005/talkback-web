@@ -10,6 +10,23 @@ import { AudioBridgePlugin, AudioBridgePluginName } from '../utils/Janus';
 import { AbstractJanusService } from './AbstractJanusService';
 import { SessionService } from './SessionService';
 
+const AUDIO_CONSTRAINTS = {
+	echoCancellation: false,
+	googEchoCancellation: false,
+	googEchoCancellation2: false,
+	googDAEchoCancellation: false,
+	autoGainControl: false,
+	googAutoGainControl: false,
+	googAutoGainControl2: false,
+	noiseSuppression: false,
+	googNoiseSuppression: false,
+	googNoiseSuppression2: false,
+	googNoiseReduction: false,
+	highpassFilter: false,
+	googHighpassFilter: false,
+	typingNoiseDetection: false,
+};
+
 export interface Participant {
 	id: number;
 	channel: number;
@@ -81,7 +98,7 @@ export class AudioBridgeService extends AbstractJanusService<AudioBridgePlugin> 
 				});
 				//
 				const stream = await this.plugin.getUserMedia({
-					audio: true,
+					audio: AUDIO_CONSTRAINTS,
 					video: false,
 				});
 				//

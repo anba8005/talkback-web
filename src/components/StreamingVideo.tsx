@@ -22,7 +22,6 @@ const useStyles = makeStyles({
 export interface StreamingVideoProps {
 	stream: MediaStream | null;
 	muted: boolean;
-	className?: string;
 }
 
 const StreamingVideo: FunctionalComponent<StreamingVideoProps> = ({
@@ -53,16 +52,11 @@ const StreamingVideo: FunctionalComponent<StreamingVideoProps> = ({
 export default memo<StreamingVideoProps>(function StreamingVideoWrapper({
 	stream,
 	muted,
-	className,
 }) {
 	const classes = useStyles();
-	return (
-		<div className={className}>
-			{stream ? (
-				<StreamingVideo stream={stream} muted={muted} />
-			) : (
-				<VideocamOff className={classes.indicator} />
-			)}
-		</div>
-	);
+	if (stream) {
+		return <StreamingVideo stream={stream} muted={muted} />;
+	} else {
+		return <VideocamOff className={classes.indicator} />;
+	}
 });

@@ -7,7 +7,7 @@ import { TallyStore } from '../stores/TallyStore';
 const useStyles = makeStyles((theme) => ({
 	content: {
 		position: 'absolute',
-		top: 0,
+		top: theme.spacing(1),
 		left: 0,
 		right: 0,
 		display: 'flex',
@@ -26,7 +26,7 @@ interface ItemProps {
 
 const Item = observer<ItemProps>(function Item({ channel, tally }) {
 	const classes = useStyles();
-	const color = tally.active === channel ? 'secondary' : 'default';
+	const color = tally.isActive(channel) ? 'secondary' : 'default';
 	const label = !isNaN(channel) ? String(channel) : '?';
 	return <Chip className={classes.chip} label={label} color={color} />;
 });
