@@ -3,6 +3,7 @@ import { Button, Card, CardContent, Grid, makeStyles } from '@material-ui/core';
 import { view } from '@risingstack/react-easy-state';
 import { useRootContext } from './RootContext';
 import { useRef, useEffect } from 'preact/hooks';
+import { isCustomServer } from '../utils/Helpers';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -27,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
 export default view(function Error() {
 	const { settings } = useRootContext();
 	const popupInterval = useRef<any>(null);
+	//
+	const customServer = isCustomServer(settings.urlHttp);
 	//
 	const handleCheck = () => {
 		const popup = window.open(
@@ -67,19 +70,27 @@ export default view(function Error() {
 							<Grid container direction="column" justify="center" spacing={2}>
 								<Grid item>
 									<h3>Error connecting to {settings.urlHttp}</h3>
+									{customServer && (
+										<h4>
+											Looks like you are connecting to custom server. Please
+											check connectivity and accept invalid certificates
+										</h4>
+									)}
 								</Grid>
-								<Grid item>
-									<Grid container justify="center">
-										<Button
-											variant="contained"
-											color="primary"
-											className={classes.button}
-											onClick={handleCheck}
-										>
-											Check connectivity
-										</Button>
+								{customServer && (
+									<Grid item>
+										<Grid container justify="center">
+											<Button
+												variant="contained"
+												color="primary"
+												className={classes.button}
+												onClick={handleCheck}
+											>
+												Check connectivity
+											</Button>
+										</Grid>
 									</Grid>
-								</Grid>
+								)}
 								<Grid item>
 									<Grid container justify="center">
 										<Button
