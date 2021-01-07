@@ -138,7 +138,7 @@ export default view(function SettingsDialog() {
 					/>
 					<TextField
 						required
-						label="Channel"
+						label="Tally channel"
 						value={channel}
 						error={!isPositiveOrZeroNumber(channel)}
 						onChange={(e) => setChannel(e.target.value)}

@@ -6,7 +6,6 @@ import Intercom from './Intercom';
 import Controls from './Controls';
 import Participants from './Participants';
 import VisibilityChecker from './VisibilityChecker';
-import WakelockChecker from './WakelockChecker';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -22,7 +21,6 @@ export default view(function Root() {
 	return (
 		<div className={classes.root}>
 			<VisibilityChecker />
-			<WakelockChecker />
 			<Controls />
 			<Participants />
 			<Intercom />
