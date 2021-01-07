@@ -48,8 +48,10 @@ export class RootStore {
 		this._audioBridgeService.setDisplayName(String(this.settings.channel));
 		this._streamingService.setStreamingEnabled(this.settings.offair);
 		this._streamingService.setRoomId(this.settings.roomId);
-		// connect
-		return this._sessionService.connect(this.settings.url);
+	}
+
+	public async connect() {
+		return this._sessionService.connect(this.settings.urlWs);
 	}
 }
 

@@ -14,6 +14,7 @@ export interface Root {
 	tally: TallyStore;
 	settings: SettingsStore;
 	hydrate: () => Promise<void>;
+	connect: () => Promise<void>;
 }
 
 let root: Root;
@@ -27,6 +28,7 @@ function getRoot() {
 			tally: rootStore.tally,
 			settings: rootStore.settings,
 			hydrate: () => rootStore.hydrate(),
+			connect: () => rootStore.connect(),
 		};
 	}
 	return root;

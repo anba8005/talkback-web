@@ -44,6 +44,18 @@ export class SettingsStore {
 		return this._settings.url;
 	}
 
+	public get urlWs() {
+		return this._settings.url
+			.replaceAll('http://', 'ws://')
+			.replaceAll('https://', 'wss://');
+	}
+
+	public get urlHttp() {
+		return this._settings.url
+			.replaceAll('ws://', 'http://')
+			.replaceAll('wss://', 'https://');
+	}
+
 	public get roomId() {
 		return this._settings.roomId;
 	}
