@@ -1,5 +1,5 @@
 import { store } from '@risingstack/react-easy-state';
-import { StreamingService } from '../services/StreamingService';
+import { DataMessage, StreamingService } from '../services/StreamingService';
 
 export class TallyStore {
 	private _store = store({
@@ -14,16 +14,11 @@ export class TallyStore {
 		return !!this._store.active.get(channel);
 	}
 
-	private _onMessage(msg: string) {
-		const active = new Map<number, boolean>();
-		try {
-			const tally = JSON.parse(msg) as number[]; /// [ 1 , 2 ] - active channels
-			if (Array.isArray(tally)) {
-				tally.forEach((t) => active.set(t, true));
-				this._store.active = active;
-			}
-		} catch (e) {
-			console.error(e);
+	private _onMessage(msg: DataMessage) {
+		if (msg.tally && msg.tally.pgm && Array.isArray(msg.tally.pgm)) {
+			const active = new Map<number, boolean>();
+			msg.tally.pgm.forEach((t) => active.set(t, true));
+			this._store.active = active;
 		}
 	}
 }

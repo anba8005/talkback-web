@@ -8,9 +8,17 @@ import { StreamingPlugin, StreamingPluginName } from '../utils/Janus';
 import { AbstractJanusService } from './AbstractJanusService';
 import { SessionService } from './SessionService';
 
+export interface TallyMessage {
+	pgm: number[];
+}
+
+export interface DataMessage {
+	tally: TallyMessage;
+}
+
 export class StreamingService extends AbstractJanusService<StreamingPlugin> {
 	private _streamEvent = new SimpleEventDispatcher<MediaStream | null>();
-	private _messageEvent = new SimpleEventDispatcher<string>();
+	private _messageEvent = new SimpleEventDispatcher<DataMessage>();
 
 	private _channel?: RTCDataChannel;
 
@@ -26,7 +34,7 @@ export class StreamingService extends AbstractJanusService<StreamingPlugin> {
 		return this._streamEvent.asEvent().subscribe(handler);
 	}
 
-	public onMessage(handler: ISimpleEventHandler<string>) {
+	public onMessage(handler: ISimpleEventHandler<DataMessage>) {
 		return this._messageEvent.asEvent().subscribe(handler);
 	}
 
@@ -91,7 +99,7 @@ export class StreamingService extends AbstractJanusService<StreamingPlugin> {
 					const message = String(msg.data)
 						.replaceAll('\n', '')
 						.replaceAll('\r', '');
-					this._messageEvent.dispatch(message);
+					this._messageEvent.dispatch(JSON.parse(message));
 				} catch (e) {
 					console.error(e);
 				}
