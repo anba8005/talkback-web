@@ -2,7 +2,7 @@ import { Fab, makeStyles } from '@material-ui/core';
 import { h } from 'preact';
 import Mic from '@material-ui/icons/Mic';
 import MicNone from '@material-ui/icons/MicNone';
-import { observer } from 'mobx-react-lite';
+import { view } from '@risingstack/react-easy-state';
 import { useRootContext } from './RootContext';
 import { useCallback } from 'preact/hooks';
 import clsx from 'clsx';
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default observer(function TalkButton() {
+export default view(function TalkButton() {
 	const { intercom } = useRootContext();
 	//
 	const handleTalkOn = useCallback(() => {

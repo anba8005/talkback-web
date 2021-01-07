@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import { observer } from 'mobx-react-lite';
+import { view } from '@risingstack/react-easy-state';
 import { h } from 'preact';
 import { useRootContext } from './RootContext';
 import StreamingVideo from './StreamingVideo';
@@ -29,8 +29,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default observer(function Offair() {
+export default view(function Offair() {
 	const { offair, tally, settings } = useRootContext();
+	//
+	const stream = offair.connected ? offair.stream : null;
 	//
 	const classes = useStyles();
 	//
@@ -43,7 +45,7 @@ export default observer(function Offair() {
 	return (
 		<div className={clsx(classes.fullscreen, activeClass, borderClass)}>
 			{settings.offair && (
-				<StreamingVideo muted={offair.muted} stream={offair.stream} />
+				<StreamingVideo muted={offair.muted} stream={stream} />
 			)}
 		</div>
 	);

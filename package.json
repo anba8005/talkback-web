@@ -21,15 +21,14 @@
 	"dependencies": {
 		"@material-ui/core": "^4.11.2",
 		"@material-ui/icons": "^4.11.2",
+		"@risingstack/react-easy-state": "^6.3.0",
 		"clsx": "^1.1.1",
 		"janus-gateway-js": "anba8005/janus-gateway-js",
-		"mobx": "^6.0.4",
-		"mobx-react-lite": "^3.1.6",
-		"mobx-sync": "^3.0.0",
 		"preact": "^10.5.9",
 		"preact-jsx-chai": "^2.3.2",
 		"preact-markup": "^1.6.0",
 		"preact-render-to-string": "^5.1.12",
+		"source-map-explorer": "^2.5.1",
 		"strongly-typed-events": "^2.0.6"
 	},
 	"devDependencies": {

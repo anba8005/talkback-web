@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { makeStyles } from '@material-ui/core';
-import { observer } from 'mobx-react-lite';
+import { view } from '@risingstack/react-easy-state';
 import Offair from './Offair';
 import Intercom from './Intercom';
 import Controls from './Controls';
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default observer(function Root() {
+export default view(function Root() {
 	const classes = useStyles();
 	return (
 		<div className={classes.root}>

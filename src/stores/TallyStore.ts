@@ -1,17 +1,17 @@
-import { makeObservable, observable, runInAction } from 'mobx';
+import { store } from '@risingstack/react-easy-state';
 import { StreamingService } from '../services/StreamingService';
 
 export class TallyStore {
-	@observable.ref
-	private _active: Map<number, boolean> = new Map<number, boolean>();
+	private _store = store({
+		active: new Map<number, boolean>(),
+	});
 
 	constructor(streaming: StreamingService) {
-		makeObservable(this);
 		streaming.onMessage((message) => this._onMessage(message));
 	}
 
 	public isActive(channel: number) {
-		return !!this._active.get(channel);
+		return !!this._store.active.get(channel);
 	}
 
 	private _onMessage(msg: string) {
@@ -19,10 +19,8 @@ export class TallyStore {
 		try {
 			const tally = JSON.parse(msg) as number[]; /// [ 1 , 2 ] - active channels
 			if (Array.isArray(tally)) {
-				runInAction(() => {
-					tally.forEach((t) => active.set(t, true));
-					this._active = active;
-				});
+				tally.forEach((t) => active.set(t, true));
+				this._store.active = active;
 			}
 		} catch (e) {
 			console.error(e);

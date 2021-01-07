@@ -16,7 +16,7 @@ import {
 	FormControlLabel,
 	Switch,
 } from '@material-ui/core';
-import { observer } from 'mobx-react-lite';
+import { view } from '@risingstack/react-easy-state';
 import { h } from 'preact';
 import { memo } from 'preact/compat';
 import { useRootContext } from './RootContext';
@@ -76,7 +76,7 @@ const SettingsDialogTitle = memo<SettingsDialogTitleProps>(
 	},
 );
 
-export default observer(function SettingsDialog() {
+export default view(function SettingsDialog() {
 	const { settings } = useRootContext();
 	//
 	const [url, setUrl] = useState<string>(settings.url);

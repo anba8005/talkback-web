@@ -5,7 +5,6 @@ import { IntercomStore } from './IntercomStore';
 import { OffairStore } from './OffairStore';
 import { TallyStore } from './TallyStore';
 import { SettingsStore } from './SettingsStore';
-import { StoreTrunkHelper } from '../utils/StoreTrunkHelper';
 
 export class RootStore {
 	private _intercom: IntercomStore;
@@ -13,15 +12,11 @@ export class RootStore {
 	private _tally: TallyStore;
 	private _settings: SettingsStore;
 
-	private _trunkHelper: StoreTrunkHelper;
-
 	constructor(
 		private _sessionService: SessionService,
 		private _audioBridgeService: AudioBridgeService,
 		private _streamingService: StreamingService,
 	) {
-		this._trunkHelper = new StoreTrunkHelper();
-		//
 		this._intercom = new IntercomStore(_audioBridgeService);
 		this._offair = new OffairStore(_streamingService);
 		this._tally = new TallyStore(_streamingService);
@@ -46,13 +41,7 @@ export class RootStore {
 
 	public async hydrate() {
 		// load settings
-		await Promise.allSettled([
-			this._trunkHelper.createStoreTrunk(
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-				{ settings: this.settings.settings },
-				'settingsStore',
-			),
-		]);
+		// TODO
 		// update service settings
 		this._audioBridgeService.setEnabled(this.settings.intercom);
 		this._audioBridgeService.setRoomId(this.settings.roomId);

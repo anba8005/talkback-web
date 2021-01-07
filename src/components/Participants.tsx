@@ -1,5 +1,5 @@
 import { Chip, makeStyles } from '@material-ui/core';
-import { observer } from 'mobx-react-lite';
+import { view } from '@risingstack/react-easy-state';
 import { h } from 'preact';
 import { useRootContext } from './RootContext';
 import { TallyStore } from '../stores/TallyStore';
@@ -24,14 +24,14 @@ interface ItemProps {
 	tally: TallyStore;
 }
 
-const Item = observer<ItemProps>(function Item({ channel, tally }) {
+const Item = view(function Item({ channel, tally }: ItemProps) {
 	const classes = useStyles();
 	const color = tally.isActive(channel) ? 'secondary' : 'default';
 	const label = !isNaN(channel) ? String(channel) : '?';
 	return <Chip className={classes.chip} label={label} color={color} />;
 });
 
-export default observer(function Participants() {
+export default view(function Participants() {
 	const { intercom, tally } = useRootContext();
 	const classes = useStyles();
 	return (

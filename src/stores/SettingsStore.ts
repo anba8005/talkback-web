@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from 'mobx';
+import { store, batch } from '@risingstack/react-easy-state';
 
 export interface Settings {
 	url: string;
@@ -17,46 +17,40 @@ const DEFAULT: Settings = {
 };
 
 export class SettingsStore {
-	@observable
-	public settings = DEFAULT;
+	private _settings = store(DEFAULT);
 
-	@observable
-	private _dialogOpen = false;
-
-	constructor() {
-		makeObservable(this);
-	}
+	private _store = store({
+		dialogOpen: false,
+	});
 
 	public get url() {
-		return this.settings.url;
+		return this._settings.url;
 	}
 
 	public get roomId() {
-		return this.settings.roomId;
+		return this._settings.roomId;
 	}
 
 	public get channel() {
-		return this.settings.channel;
+		return this._settings.channel;
 	}
 
 	public get intercom() {
-		return this.settings.intercom;
+		return this._settings.intercom;
 	}
 
 	public get offair() {
-		return this.settings.offair;
+		return this._settings.offair;
 	}
 
 	public get dialogOpen() {
-		return this._dialogOpen;
+		return this._store.dialogOpen;
 	}
 
-	@action
 	public setDialogOpen(open: boolean) {
-		this._dialogOpen = open;
+		this._store.dialogOpen = open;
 	}
 
-	@action
 	public applySettings(
 		url: string,
 		roomId: number,
@@ -64,10 +58,12 @@ export class SettingsStore {
 		intercom: boolean,
 		offair: boolean,
 	) {
-		this.settings.url = url;
-		this.settings.roomId = roomId;
-		this.settings.channel = channel;
-		this.settings.intercom = intercom;
-		this.settings.offair = offair;
+		batch(() => {
+			this._settings.url = url;
+			this._settings.roomId = roomId;
+			this._settings.channel = channel;
+			this._settings.intercom = intercom;
+			this._settings.offair = offair;
+		});
 	}
 }

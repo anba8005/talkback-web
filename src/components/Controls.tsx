@@ -1,5 +1,5 @@
 import { Fab, makeStyles } from '@material-ui/core';
-import { observer } from 'mobx-react-lite';
+import { view } from '@risingstack/react-easy-state';
 import { h } from 'preact';
 import RecordVoiceOverIcon from '@material-ui/icons/RecordVoiceOver';
 import VoiceOverOffIcon from '@material-ui/icons/VoiceOverOff';
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default observer(function Controls() {
+export default view(function Controls() {
 	const { intercom, offair, settings } = useRootContext();
 	//
 	const handleIntercomToggle = () => {
