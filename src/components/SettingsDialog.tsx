@@ -22,7 +22,7 @@ import { memo } from 'preact/compat';
 import { useRootContext } from './RootContext';
 import CloseIcon from '@material-ui/icons/Close';
 import { useState } from 'preact/hooks';
-import { isNumber } from '../utils/Helpers';
+import { isPositiveNumber, isPositiveOrZeroNumber } from '../utils/Helpers';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -104,7 +104,8 @@ export default view(function SettingsDialog() {
 		setTimeout(() => location.reload());
 	};
 	//
-	const hasError = url === '' || !isNumber(roomId) || !isNumber(channel);
+	const hasError =
+		url === '' || !isPositiveNumber(roomId) || !isPositiveOrZeroNumber(channel);
 	//
 	return (
 		<Dialog
@@ -131,7 +132,7 @@ export default view(function SettingsDialog() {
 					<TextField
 						required
 						label="Room"
-						error={!isNumber(roomId)}
+						error={!isPositiveNumber(roomId)}
 						value={roomId}
 						onChange={(e) => setRoomId(e.target.value)}
 					/>
@@ -139,7 +140,7 @@ export default view(function SettingsDialog() {
 						required
 						label="Channel"
 						value={channel}
-						error={!isNumber(channel)}
+						error={!isPositiveOrZeroNumber(channel)}
 						onChange={(e) => setChannel(e.target.value)}
 					/>
 				</FormGroup>

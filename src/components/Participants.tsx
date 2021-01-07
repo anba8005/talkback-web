@@ -3,6 +3,7 @@ import { view } from '@risingstack/react-easy-state';
 import { h } from 'preact';
 import { useRootContext } from './RootContext';
 import { TallyStore } from '../stores/TallyStore';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
 	content: {
@@ -17,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
 	chip: {
 		margin: theme.spacing(1),
 	},
+	zero: {
+		opacity: 0.4,
+	},
 }));
 
 interface ItemProps {
@@ -28,7 +32,9 @@ const Item = view(function Item({ channel, tally }: ItemProps) {
 	const classes = useStyles();
 	const color = tally.isActive(channel) ? 'secondary' : 'default';
 	const label = !isNaN(channel) ? String(channel) : '?';
-	return <Chip className={classes.chip} label={label} color={color} />;
+	const className =
+		channel > 0 ? classes.chip : clsx(classes.chip, classes.zero);
+	return <Chip className={className} label={label} color={color} />;
 });
 
 export default view(function Participants() {

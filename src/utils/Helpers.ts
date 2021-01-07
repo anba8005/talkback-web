@@ -2,6 +2,16 @@ export function isNumber(value: any) {
 	return !isNaN(Number(value));
 }
 
+export function isPositiveNumber(value: any) {
+	const num = Number(value);
+	return !isNaN(num) && num > 0;
+}
+
+export function isPositiveOrZeroNumber(value: any) {
+	const num = Number(value);
+	return !isNaN(num) && num >= 0;
+}
+
 export function getRandomIntInclusive(min: number, max: number) {
 	min = Math.ceil(min);
 	max = Math.floor(max);

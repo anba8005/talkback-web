@@ -28,6 +28,9 @@ export class IntercomStore {
 			this._store.connected = stream !== null;
 		});
 		_audioBridge.onList((participants) => {
+			participants.sort((p1, p2) => {
+				return p1.channel - p2.channel;
+			});
 			this._store.participants = participants;
 		});
 	}
