@@ -12,3 +12,8 @@ export function isCustomServer(server: string) {
 	const url = new URL(server);
 	return url.port !== '443' && url.port !== '';
 }
+
+export function isChromeMac() {
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+	return navigator.appVersion.indexOf('Mac') !== -1 && !!(window as any).chrome;
+}

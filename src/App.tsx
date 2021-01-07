@@ -31,7 +31,7 @@ const Content: FunctionalComponent = () => {
 			.connect()
 			.then(() => setConnected(true))
 			.catch(() => setConnected(false));
-	});
+	}, []);
 	//
 	if (connected === null) {
 		return <Loading />;
