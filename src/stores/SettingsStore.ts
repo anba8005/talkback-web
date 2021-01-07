@@ -1,4 +1,5 @@
 import { store, batch } from '@risingstack/react-easy-state';
+import persist, { PersistAPI } from '../utils/Persist';
 
 export interface Settings {
 	url: string;
@@ -22,6 +23,22 @@ export class SettingsStore {
 	private _store = store({
 		dialogOpen: false,
 	});
+
+	private _presister: PersistAPI<Settings>;
+
+	constructor() {
+		const [persister] = persist<Settings>(this._settings, {
+			storageKey: 'settings-store',
+			autoLoad: false,
+		});
+		this._presister = persister;
+	}
+
+	public async hydrate() {
+		// TODO make async
+		this._presister.load();
+		return Promise.resolve();
+	}
 
 	public get url() {
 		return this._settings.url;
@@ -65,5 +82,6 @@ export class SettingsStore {
 			this._settings.intercom = intercom;
 			this._settings.offair = offair;
 		});
+		this._presister.saveImmediately();
 	}
 }

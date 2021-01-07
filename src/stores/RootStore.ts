@@ -41,7 +41,7 @@ export class RootStore {
 
 	public async hydrate() {
 		// load settings
-		// TODO
+		await this._settings.hydrate();
 		// update service settings
 		this._audioBridgeService.setEnabled(this.settings.intercom);
 		this._audioBridgeService.setRoomId(this.settings.roomId);
