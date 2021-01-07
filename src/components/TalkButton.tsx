@@ -2,6 +2,7 @@ import { Fab, makeStyles } from '@material-ui/core';
 import { h } from 'preact';
 import Mic from '@material-ui/icons/Mic';
 import MicNone from '@material-ui/icons/MicNone';
+import MicOff from '@material-ui/icons/MicOffOutlined';
 import { view } from '@risingstack/react-easy-state';
 import { useRootContext } from './RootContext';
 import { useCallback } from 'preact/hooks';
@@ -28,6 +29,13 @@ const useStyles = makeStyles((theme) => ({
 			backgroundColor: theme.palette.error.dark,
 		},
 	},
+	failed: {
+		'&:disabled': {
+			backgroundColor: 'rgba(255, 0, 0, 1) !important',
+			opacity: 0.6,
+			color: 'rgba(255, 255, 255, 1) !important',
+		},
+	},
 }));
 
 export default view(function TalkButton() {
@@ -43,18 +51,32 @@ export default view(function TalkButton() {
 	}, []);
 	//
 	const classes = useStyles();
+	//
+	const className = intercom.failed
+		? classes.failed
+		: intercom.talk
+		? classes.active
+		: undefined;
+	//
+	const icon = intercom.failed ? (
+		<MicOff className={classes.icon} />
+	) : (
+		<MicNone className={classes.icon} />
+	);
+	//
 	return (
 		<Fab
-			className={clsx(classes.fab, intercom.talk ? classes.active : undefined)}
+			className={clsx(classes.fab, className)}
 			onMouseDown={handleTalkOn}
 			onMouseUp={handleTalkOff}
 			onTouchStart={handleTalkOn}
 			onTouchEnd={handleTalkOff}
+			disabled={intercom.failed}
 		>
 			{intercom.talk ? (
 				<Mic onTouchEnd={handleTalkOff} className={classes.icon} />
 			) : (
-				<MicNone className={classes.icon} />
+				icon
 			)}
 		</Fab>
 	);

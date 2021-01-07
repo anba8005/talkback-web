@@ -47,4 +47,8 @@ export class OffairStore {
 	public get failed() {
 		return this._store.failed;
 	}
+
+	public updateVisible(visible: boolean) {
+		this._streaming.setStreamingPaused(!visible);
+	}
 }

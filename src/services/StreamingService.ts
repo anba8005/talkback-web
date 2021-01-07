@@ -16,6 +16,8 @@ export class StreamingService extends AbstractJanusService<StreamingPlugin> {
 
 	private _streamingEnabled = true;
 
+	private _streamingPaused = false;
+
 	constructor(sessionService: SessionService) {
 		super(sessionService, StreamingPluginName);
 	}
@@ -30,6 +32,17 @@ export class StreamingService extends AbstractJanusService<StreamingPlugin> {
 
 	public setStreamingEnabled(enabled: boolean) {
 		this._streamingEnabled = enabled;
+	}
+
+	public setStreamingPaused(paused: boolean) {
+		if (this._streamingPaused !== paused && this.plugin && this.roomId) {
+			if (paused) {
+				this.plugin.pause().catch(console.error);
+			} else {
+				this.plugin.start().catch(console.error);
+			}
+		}
+		this._streamingPaused = paused;
 	}
 
 	protected shouldCreatePlugin(): boolean {
@@ -53,7 +66,7 @@ export class StreamingService extends AbstractJanusService<StreamingPlugin> {
 				//
 				this._setupDataChannel(this.plugin);
 				//
-				await this.plugin.start();
+				if (!this._streamingPaused) await this.plugin.start();
 			} catch (e) {
 				this.errorEvent.dispatch(e);
 				this._streamEvent.dispatch(null);
