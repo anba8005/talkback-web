@@ -26,19 +26,28 @@ const useStyles = makeStyles((theme) => ({
 interface ItemProps {
 	channel: number;
 	tally: TallyStore;
+	self: boolean;
 }
 
-const Item = view(function Item({ channel, tally }: ItemProps) {
+const Item = view(function Item({ channel, tally, self }: ItemProps) {
 	const classes = useStyles();
-	const color = tally.isActive(channel) ? 'secondary' : 'default';
+	const color = tally.isActive(channel)
+		? 'secondary'
+		: self
+		? 'primary'
+		: 'default';
 	const label = !isNaN(channel) ? String(channel) : '?';
 	const className =
 		channel > 0 ? classes.chip : clsx(classes.chip, classes.zero);
 	return <Chip className={className} label={label} color={color} />;
 });
 
+function isSelf(c1: number, c2: number) {
+	return c1 > 0 && c1 === c2;
+}
+
 export default view(function Participants() {
-	const { intercom, tally } = useRootContext();
+	const { intercom, tally, settings } = useRootContext();
 	const classes = useStyles();
 	return (
 		<div className={classes.content}>
@@ -46,6 +55,7 @@ export default view(function Participants() {
 				<Item
 					key={participant.id}
 					channel={participant.channel}
+					self={isSelf(settings.channel, participant.channel)}
 					tally={tally}
 				/>
 			))}
