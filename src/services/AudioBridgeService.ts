@@ -97,7 +97,7 @@ export class AudioBridgeService extends AbstractJanusService<AudioBridgePlugin> 
 					display: this._displayName,
 				});
 				//
-				const stream = await this.plugin.getUserMedia({
+				const stream = await navigator.mediaDevices.getUserMedia({
 					audio: AUDIO_CONSTRAINTS,
 					video: false,
 				});
