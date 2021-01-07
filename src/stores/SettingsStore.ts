@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 
 export interface Settings {
 	url: string;
@@ -9,7 +9,7 @@ export interface Settings {
 }
 
 const DEFAULT: Settings = {
-	url: 'ws://turn.b3video.lt:8188',
+	url: 'wss://turn.b3video.lt/janus',
 	roomId: 1,
 	channel: 0,
 	intercom: true,
