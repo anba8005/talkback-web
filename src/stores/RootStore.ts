@@ -60,7 +60,7 @@ export class RootStore {
 		this._streamingService.setStreamingEnabled(this.settings.offair);
 		this._streamingService.setRoomId(this.settings.roomId);
 		// connect
-		await this._sessionService.connect(this.settings.url);
+		return this._sessionService.connect(this.settings.url);
 	}
 }
 

@@ -47,7 +47,7 @@ export const RootContextProvider: FunctionalComponent = ({ children }) => {
 	useEffect(() => {
 		root
 			.hydrate()
-			.then(() => setHydrated(true))
+			.finally(() => setHydrated(true))
 			.catch((e) => console.error(e));
 	}, [root]);
 	//
