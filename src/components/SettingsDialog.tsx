@@ -15,6 +15,9 @@ import {
 	FormGroup,
 	FormControlLabel,
 	Switch,
+	Accordion,
+	AccordionSummary,
+	AccordionDetails,
 } from '@material-ui/core';
 import { view } from '@risingstack/react-easy-state';
 import { h } from 'preact';
@@ -23,6 +26,7 @@ import { useRootContext } from './RootContext';
 import CloseIcon from '@material-ui/icons/Close';
 import { useState } from 'preact/hooks';
 import { isPositiveNumber, isPositiveOrZeroNumber } from '../utils/Helpers';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -84,6 +88,7 @@ export default view(function SettingsDialog() {
 	const [channel, setChannel] = useState<string>(String(settings.channel));
 	const [intercom, setIntercom] = useState<boolean>(settings.intercom);
 	const [offair, setOffair] = useState<boolean>(settings.offair);
+	const [aec, setAec] = useState<boolean>(settings.aec);
 	//
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -99,6 +104,7 @@ export default view(function SettingsDialog() {
 			Number(channel),
 			intercom,
 			offair,
+			aec,
 		);
 		settings.setDialogOpen(false);
 		setTimeout(() => location.reload());
@@ -163,6 +169,24 @@ export default view(function SettingsDialog() {
 						}
 						label="Off-Air Video"
 					/>
+				</FormGroup>
+				<FormGroup row>
+					<Accordion style={{ width: '100%' }}>
+						<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+							Advanced
+						</AccordionSummary>
+						<AccordionDetails>
+							<FormControlLabel
+								control={
+									<Switch
+										checked={aec}
+										onChange={(e) => setAec(e.target.checked)}
+									/>
+								}
+								label="Echo Cancellation"
+							/>
+						</AccordionDetails>
+					</Accordion>
 				</FormGroup>
 			</SettingsDialogContent>
 			<SettingsDialogActions>

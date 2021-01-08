@@ -44,6 +44,7 @@ export class RootStore {
 		await this._settings.hydrate();
 		// update service settings
 		this._audioBridgeService.setEnabled(this.settings.intercom);
+		this._audioBridgeService.setAEC(this.settings.aec);
 		this._audioBridgeService.setRoomId(this.settings.roomId);
 		this._audioBridgeService.setDisplayName(String(this.settings.channel));
 		this._streamingService.setStreamingEnabled(this.settings.offair);

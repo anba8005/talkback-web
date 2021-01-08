@@ -7,6 +7,7 @@ export interface Settings {
 	channel: number;
 	intercom: boolean;
 	offair: boolean;
+	aec: boolean;
 }
 
 const DEFAULT: Settings = {
@@ -15,6 +16,7 @@ const DEFAULT: Settings = {
 	channel: 0,
 	intercom: true,
 	offair: true,
+	aec: false,
 };
 
 export class SettingsStore {
@@ -72,6 +74,10 @@ export class SettingsStore {
 		return this._settings.offair;
 	}
 
+	public get aec() {
+		return this._settings.aec;
+	}
+
 	public get dialogOpen() {
 		return this._store.dialogOpen;
 	}
@@ -86,6 +92,7 @@ export class SettingsStore {
 		channel: number,
 		intercom: boolean,
 		offair: boolean,
+		aec: boolean,
 	) {
 		batch(() => {
 			this._settings.url = url;
@@ -93,6 +100,7 @@ export class SettingsStore {
 			this._settings.channel = channel;
 			this._settings.intercom = intercom;
 			this._settings.offair = offair;
+			this._settings.aec = aec;
 		});
 		this._presister.saveImmediately();
 	}

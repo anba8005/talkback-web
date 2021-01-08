@@ -10,21 +10,11 @@ import { AudioBridgePlugin, AudioBridgePluginName } from '../utils/Janus';
 import { AbstractJanusService } from './AbstractJanusService';
 import { SessionService } from './SessionService';
 
-const AUDIO_CONSTRAINTS = {
+const AUDIO_AEC_CONSTRAINTS = {
 	echoCancellation: false,
 	googEchoCancellation: false,
 	googEchoCancellation2: false,
 	googDAEchoCancellation: false,
-	autoGainControl: false,
-	googAutoGainControl: false,
-	googAutoGainControl2: false,
-	noiseSuppression: false,
-	googNoiseSuppression: false,
-	googNoiseSuppression2: false,
-	googNoiseReduction: false,
-	highpassFilter: false,
-	googHighpassFilter: false,
-	typingNoiseDetection: false,
 };
 
 export interface Participant {
@@ -40,6 +30,8 @@ export class AudioBridgeService extends AbstractJanusService<AudioBridgePlugin> 
 	private _enabled = true;
 
 	private _talk = false;
+
+	private _aec = false;
 
 	private _displayName = '';
 
@@ -75,6 +67,10 @@ export class AudioBridgeService extends AbstractJanusService<AudioBridgePlugin> 
 		this._enabled = enabled;
 	}
 
+	public setAEC(aec: boolean) {
+		this._aec = aec;
+	}
+
 	protected shouldCreatePlugin(): boolean {
 		return this._enabled;
 	}
@@ -98,7 +94,7 @@ export class AudioBridgeService extends AbstractJanusService<AudioBridgePlugin> 
 				});
 				//
 				const stream = await navigator.mediaDevices.getUserMedia({
-					audio: AUDIO_CONSTRAINTS,
+					audio: this._aec ? AUDIO_AEC_CONSTRAINTS : true,
 					video: false,
 				});
 				//
