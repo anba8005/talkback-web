@@ -3,7 +3,12 @@ import { Button, Card, CardContent, Grid, makeStyles } from '@material-ui/core';
 import { view } from '@risingstack/react-easy-state';
 import { useRootContext } from './RootContext';
 import { useRef, useEffect } from 'preact/hooks';
-import { isChromeMac, isCustomServer } from '../utils/Helpers';
+import { isCustomServer } from '../common/utils/Helpers';
+
+function isChromeMac() {
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+	return navigator.appVersion.indexOf('Mac') !== -1 && !!(window as any).chrome;
+}
 
 const useStyles = makeStyles((theme) => ({
 	root: {

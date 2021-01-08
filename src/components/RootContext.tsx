@@ -1,10 +1,10 @@
 import { createContext, FunctionalComponent, h } from 'preact';
 import { useContext, useEffect, useState } from 'preact/hooks';
-import { IntercomStore } from '../stores/IntercomStore';
-import { OffairStore } from '../stores/OffairStore';
+import { IntercomStore } from '../common/stores/IntercomStore';
+import { OffairStore } from '../common/stores/OffairStore';
+import { SettingsStore } from '../common/stores/SettingsStore';
+import { TallyStore } from '../common/stores/TallyStore';
 import { createRootStore } from '../stores/RootStore';
-import { SettingsStore } from '../stores/SettingsStore';
-import { TallyStore } from '../stores/TallyStore';
 
 // context
 

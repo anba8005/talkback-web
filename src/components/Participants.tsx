@@ -2,8 +2,8 @@ import { Chip, makeStyles } from '@material-ui/core';
 import { view } from '@risingstack/react-easy-state';
 import { h } from 'preact';
 import { useRootContext } from './RootContext';
-import { TallyStore } from '../stores/TallyStore';
 import clsx from 'clsx';
+import { TallyStore } from '../common/stores/TallyStore';
 
 const useStyles = makeStyles((theme) => ({
 	content: {

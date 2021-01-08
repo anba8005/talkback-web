@@ -25,8 +25,11 @@ import { memo } from 'preact/compat';
 import { useRootContext } from './RootContext';
 import CloseIcon from '@material-ui/icons/Close';
 import { useState } from 'preact/hooks';
-import { isPositiveNumber, isPositiveOrZeroNumber } from '../utils/Helpers';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {
+	isPositiveNumber,
+	isPositiveOrZeroNumber,
+} from '../common/utils/Helpers';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
