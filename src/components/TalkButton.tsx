@@ -36,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
 			color: 'rgba(255, 255, 255, 1) !important',
 		},
 	},
+	disconnected: {
+		'&:disabled': {
+			opacity: 1,
+			color: 'rgba(255, 255, 255, 1) !important',
+		},
+	},
 }));
 
 export default view(function TalkButton() {
@@ -52,13 +58,14 @@ export default view(function TalkButton() {
 	//
 	const classes = useStyles();
 	//
-	const className = intercom.failed
-		? classes.failed
-		: intercom.talk
-		? classes.active
-		: undefined;
+	let className = undefined;
+	if (!intercom.connected) {
+		className = intercom.failed ? classes.failed : classes.disconnected;
+	} else {
+		className = intercom.talk ? classes.active : undefined;
+	}
 	//
-	const icon = intercom.failed ? (
+	const icon = !intercom.connected ? (
 		<MicOff className={classes.icon} />
 	) : (
 		<MicNone className={classes.icon} />
@@ -71,7 +78,7 @@ export default view(function TalkButton() {
 			onMouseUp={handleTalkOff}
 			onTouchStart={handleTalkOn}
 			onTouchEnd={handleTalkOff}
-			disabled={intercom.failed}
+			disabled={!intercom.connected}
 		>
 			{intercom.talk ? (
 				<Mic onTouchEnd={handleTalkOff} className={classes.icon} />
