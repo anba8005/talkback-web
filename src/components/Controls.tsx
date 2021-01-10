@@ -24,10 +24,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default view(function Controls() {
-	const { intercom, offair, settings } = useRootContext();
+	const { offair, intercom, settings } = useRootContext();
+	//
+	const group = intercom.activeGroup;
 	//
 	const handleIntercomToggle = () => {
-		intercom.setMuted(!intercom.muted);
+		group?.setMuted(!group.muted);
 	};
 	//
 	const handleOffairToggle = () => {
@@ -41,13 +43,13 @@ export default view(function Controls() {
 	const classes = useStyles();
 	return (
 		<div className={classes.content}>
-			{settings.intercom && (
+			{settings.intercom && group && (
 				<Fab
 					className={classes.fab}
 					size="small"
 					onClick={handleIntercomToggle}
 				>
-					{intercom.muted ? <VoiceOverOffIcon /> : <RecordVoiceOverIcon />}
+					{group.muted ? <VoiceOverOffIcon /> : <RecordVoiceOverIcon />}
 				</Fab>
 			)}
 			{settings.offair && (

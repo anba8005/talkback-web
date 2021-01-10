@@ -4,6 +4,7 @@ import { h } from 'preact';
 import { useRootContext } from './RootContext';
 import clsx from 'clsx';
 import { TallyStore } from '../common/stores/TallyStore';
+import { Participant } from '../common/services/AudioBridgeService';
 
 const useStyles = makeStyles((theme) => ({
 	content: {
@@ -23,13 +24,17 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-interface ItemProps {
+interface ParticipantItemProps {
 	channel: number;
 	tally: TallyStore;
 	self: boolean;
 }
 
-const Item = view(function Item({ channel, tally, self }: ItemProps) {
+const ParticipantItem = view(function ParticipantItem({
+	channel,
+	tally,
+	self,
+}: ParticipantItemProps) {
 	const classes = useStyles();
 	const color = tally.isActive(channel)
 		? 'secondary'
@@ -46,19 +51,28 @@ function isSelf(c1: number, c2: number) {
 	return c1 > 0 && c1 === c2;
 }
 
+function notZeroChannel(participant: Participant) {
+	return participant.channel > 0;
+}
+
 export default view(function Participants() {
-	const { intercom, tally, settings } = useRootContext();
+	const { tally, intercom, settings } = useRootContext();
 	const classes = useStyles();
-	return (
-		<div className={classes.content}>
-			{intercom.participants.map((participant) => (
-				<Item
-					key={participant.id}
-					channel={participant.channel}
-					self={isSelf(settings.channel, participant.channel)}
-					tally={tally}
-				/>
-			))}
-		</div>
-	);
+	const group = intercom.activeGroup;
+	if (group) {
+		return (
+			<div className={classes.content}>
+				{group.participants.filter(notZeroChannel).map((participant) => (
+					<ParticipantItem
+						key={participant.id}
+						channel={participant.channel}
+						self={isSelf(settings.channel, participant.channel)}
+						tally={tally}
+					/>
+				))}
+			</div>
+		);
+	} else {
+		return null;
+	}
 });

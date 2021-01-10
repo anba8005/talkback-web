@@ -27,9 +27,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useState } from 'preact/hooks';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {
-	isPositiveNumber,
+	isNumberInRange,
 	isPositiveOrZeroNumber,
 } from '../common/utils/Helpers';
+import { MAX_NUM_GROUPS } from '../common/stores/IntercomStore';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -84,7 +85,8 @@ const SettingsDialogTitle = memo<SettingsDialogTitleProps>(
 );
 
 export default view(function SettingsDialog() {
-	const { settings } = useRootContext();
+	const root = useRootContext();
+	const { settings } = root;
 	//
 	const [url, setUrl] = useState<string>(settings.url);
 	const [roomId, setRoomId] = useState<string>(String(settings.roomId));
@@ -92,6 +94,9 @@ export default view(function SettingsDialog() {
 	const [intercom, setIntercom] = useState<boolean>(settings.intercom);
 	const [offair, setOffair] = useState<boolean>(settings.offair);
 	const [aec, setAec] = useState<boolean>(settings.aec);
+	const [numGroups, setNumGroups] = useState<string>(
+		String(settings.numGroups),
+	);
 	//
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -108,13 +113,26 @@ export default view(function SettingsDialog() {
 			intercom,
 			offair,
 			aec,
+			Number(numGroups),
 		);
 		settings.setDialogOpen(false);
-		setTimeout(() => location.reload());
+		if (root.isConnected() !== null) {
+			// connected or error
+			root.disconnect();
+			setTimeout(() => {
+				root
+					.hydrate()
+					.then(() => root.connect())
+					.catch(console.error);
+			}, 1000);
+		}
 	};
 	//
 	const hasError =
-		url === '' || !isPositiveNumber(roomId) || !isPositiveOrZeroNumber(channel);
+		url === '' ||
+		!isNumberInRange(roomId, 0, MAX_NUM_GROUPS) ||
+		!isPositiveOrZeroNumber(channel) ||
+		!isNumberInRange(numGroups, 1, 8);
 	//
 	return (
 		<Dialog
@@ -140,8 +158,8 @@ export default view(function SettingsDialog() {
 				<FormGroup row>
 					<TextField
 						required
-						label="Intercom group"
-						error={!isPositiveNumber(roomId)}
+						label="Intercom group (0-8)"
+						error={!isNumberInRange(roomId, 0, MAX_NUM_GROUPS)}
 						value={roomId}
 						onChange={(e) => setRoomId(e.target.value)}
 					/>
@@ -179,15 +197,24 @@ export default view(function SettingsDialog() {
 							Advanced
 						</AccordionSummary>
 						<AccordionDetails>
-							<FormControlLabel
-								control={
-									<Switch
-										checked={aec}
-										onChange={(e) => setAec(e.target.checked)}
-									/>
-								}
-								label="Echo Cancellation"
-							/>
+							<FormGroup>
+								<FormControlLabel
+									control={
+										<Switch
+											checked={aec}
+											onChange={(e) => setAec(e.target.checked)}
+										/>
+									}
+									label="Echo Cancellation"
+								/>
+								<TextField
+									required={true}
+									label="Max intercom groups (1-8)"
+									value={numGroups}
+									error={!isNumberInRange(numGroups, 1, 8)}
+									onChange={(e) => setNumGroups(e.target.value)}
+								/>
+							</FormGroup>
 						</AccordionDetails>
 					</Accordion>
 				</FormGroup>

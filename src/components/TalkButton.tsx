@@ -4,9 +4,9 @@ import Mic from '@material-ui/icons/Mic';
 import MicNone from '@material-ui/icons/MicNone';
 import MicOff from '@material-ui/icons/MicOffOutlined';
 import { view } from '@risingstack/react-easy-state';
-import { useRootContext } from './RootContext';
 import { useCallback } from 'preact/hooks';
 import clsx from 'clsx';
+import { useRootContext } from './RootContext';
 
 const useStyles = makeStyles((theme) => ({
 	fab: {
@@ -46,45 +46,50 @@ const useStyles = makeStyles((theme) => ({
 
 export default view(function TalkButton() {
 	const { intercom } = useRootContext();
+	const group = intercom.activeGroup;
 	//
 	const handleTalkOn = useCallback(() => {
-		intercom.setMuted(false);
-		intercom.setTalk(true);
-	}, []);
+		group?.setMuted(false);
+		group?.setTalk(true);
+	}, [group]);
 	//
 	const handleTalkOff = useCallback(() => {
-		intercom.setTalk(false);
-	}, []);
+		group?.setTalk(false);
+	}, [group]);
 	//
 	const classes = useStyles();
 	//
-	let className = undefined;
-	if (!intercom.connected) {
-		className = intercom.failed ? classes.failed : classes.disconnected;
+	if (group) {
+		let className = undefined;
+		if (!group.connected) {
+			className = group.failed ? classes.failed : classes.disconnected;
+		} else {
+			className = group.talk ? classes.active : undefined;
+		}
+		//
+		const icon = !group.connected ? (
+			<MicOff className={classes.icon} />
+		) : (
+			<MicNone className={classes.icon} />
+		);
+		//
+		return (
+			<Fab
+				className={clsx(classes.fab, className)}
+				onMouseDown={handleTalkOn}
+				onMouseUp={handleTalkOff}
+				onTouchStart={handleTalkOn}
+				onTouchEnd={handleTalkOff}
+				disabled={!group.connected}
+			>
+				{group.talk ? (
+					<Mic onTouchEnd={handleTalkOff} className={classes.icon} />
+				) : (
+					icon
+				)}
+			</Fab>
+		);
 	} else {
-		className = intercom.talk ? classes.active : undefined;
+		return null;
 	}
-	//
-	const icon = !intercom.connected ? (
-		<MicOff className={classes.icon} />
-	) : (
-		<MicNone className={classes.icon} />
-	);
-	//
-	return (
-		<Fab
-			className={clsx(classes.fab, className)}
-			onMouseDown={handleTalkOn}
-			onMouseUp={handleTalkOff}
-			onTouchStart={handleTalkOn}
-			onTouchEnd={handleTalkOff}
-			disabled={!intercom.connected}
-		>
-			{intercom.talk ? (
-				<Mic onTouchEnd={handleTalkOff} className={classes.icon} />
-			) : (
-				icon
-			)}
-		</Fab>
-	);
 });

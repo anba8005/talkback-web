@@ -6,6 +6,7 @@ import Intercom from './Intercom';
 import Controls from './Controls';
 import Participants from './Participants';
 import VisibilityChecker from './VisibilityChecker';
+import { useRootContext } from './RootContext';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -18,11 +19,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default view(function Root() {
 	const classes = useStyles();
+	const { settings } = useRootContext();
 	return (
 		<div className={classes.root}>
 			<VisibilityChecker />
 			<Controls />
-			<Participants />
+			{!settings.multiRoom && <Participants />}
 			<Intercom />
 			<Offair />
 		</div>
