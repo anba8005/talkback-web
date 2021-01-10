@@ -140,7 +140,7 @@ export default view(function SettingsDialog() {
 				<FormGroup row>
 					<TextField
 						required
-						label="Room"
+						label="Intercom group"
 						error={!isPositiveNumber(roomId)}
 						value={roomId}
 						onChange={(e) => setRoomId(e.target.value)}

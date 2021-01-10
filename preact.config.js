@@ -28,6 +28,8 @@ export default {
 		// Install webpack aliases:
 		const aliases = config.resolve.alias || (config.resolve.alias = {});
 		aliases.react = aliases['react-dom'] = 'preact/compat';
+		// shim react-native-webrtc usage in janus-gateway-js media-plugin.js. very dirty :)
+		aliases['react-native-webrtc'] = 'clsx';
 		// aliases.lodash = 'lodash-es';
 		// Install shims
 		// config.node.process = true;

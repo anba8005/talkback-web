@@ -15,6 +15,8 @@ export interface Root {
 	settings: SettingsStore;
 	hydrate: () => Promise<void>;
 	connect: () => Promise<void>;
+	disconnect: () => void;
+	isConnected: () => boolean | null;
 }
 
 let root: Root;
@@ -29,6 +31,8 @@ function getRoot() {
 			settings: rootStore.settings,
 			hydrate: () => rootStore.hydrate(),
 			connect: () => rootStore.connect(),
+			disconnect: () => rootStore.disconnect(),
+			isConnected: () => rootStore.isConnected(),
 		};
 	}
 	return root;
