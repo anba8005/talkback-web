@@ -1,4 +1,4 @@
-import { Badge, Button, makeStyles } from '@material-ui/core';
+import { Button, makeStyles, Tooltip } from '@material-ui/core';
 import { view } from '@risingstack/react-easy-state';
 import { h } from 'preact';
 import { IntercomGroup } from '../common/stores/IntercomGroup';
@@ -15,13 +15,19 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+function getTooltipText(p: number) {
+	return `${p} ${p !== 1 ? 'participants' : 'participant'}`;
+}
+
 interface GroupSelectorProps {
 	group: IntercomGroup;
 }
 
 export default view(function GroupItem({ group }: GroupSelectorProps) {
 	const onClick = () => {
-		if (group.talk) {
+		if (group.busy) {
+			return;
+		} else if (group.talk) {
 			group.stop();
 		} else if (group.muted) {
 			group.start();
@@ -40,20 +46,18 @@ export default view(function GroupItem({ group }: GroupSelectorProps) {
 		<HearingIcon />
 	);
 	//
-	const iconWithBadge = (
-		<Badge badgeContent={group.participants.length}>{icon}</Badge>
-	);
-	//
 	const classes = useStyles();
 	return (
-		<Button
-			className={classes.button}
-			variant="contained"
-			color={color}
-			startIcon={iconWithBadge}
-			onClick={onClick}
-		>
-			{group.roomId}
-		</Button>
+		<Tooltip title={getTooltipText(group.participants.length)}>
+			<Button
+				className={classes.button}
+				variant="contained"
+				color={color}
+				startIcon={icon}
+				onClick={onClick}
+			>
+				{group.roomId}
+			</Button>
+		</Tooltip>
 	);
 });
