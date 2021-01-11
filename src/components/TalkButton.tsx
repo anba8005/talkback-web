@@ -48,13 +48,13 @@ export default view(function TalkButton() {
 	const { intercom } = useRootContext();
 	const group = intercom.activeGroup;
 	//
-	const handleTalkOn = useCallback(() => {
-		group?.setMuted(false);
-		group?.setTalk(true);
-	}, [group]);
-	//
-	const handleTalkOff = useCallback(() => {
-		group?.setTalk(false);
+	const handleTalkClick = useCallback(() => {
+		if (group?.talk) {
+			group?.setTalk(false);
+		} else {
+			group?.setMuted(false);
+			group?.setTalk(true);
+		}
 	}, [group]);
 	//
 	const classes = useStyles();
@@ -76,17 +76,10 @@ export default view(function TalkButton() {
 		return (
 			<Fab
 				className={clsx(classes.fab, className)}
-				onMouseDown={handleTalkOn}
-				onMouseUp={handleTalkOff}
-				onTouchStart={handleTalkOn}
-				onTouchEnd={handleTalkOff}
+				onClick={handleTalkClick}
 				disabled={!group.connected}
 			>
-				{group.talk ? (
-					<Mic onTouchEnd={handleTalkOff} className={classes.icon} />
-				) : (
-					icon
-				)}
+				{group.talk ? <Mic className={classes.icon} /> : icon}
 			</Fab>
 		);
 	} else {
