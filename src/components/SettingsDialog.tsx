@@ -120,10 +120,7 @@ export default view(function SettingsDialog() {
 			// connected or error
 			root.disconnect();
 			setTimeout(() => {
-				root
-					.hydrate()
-					.then(() => root.connect())
-					.catch(console.error);
+				root.connect().catch(console.error);
 			}, 1000);
 		}
 	};
