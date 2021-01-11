@@ -5284,8 +5284,8 @@ jake@^10.6.1:
     minimatch "^3.0.4"
 
 janus-gateway-js@anba8005/janus-gateway-js:
-  version "3.0.7"
-  resolved "https://codeload.github.com/anba8005/janus-gateway-js/tar.gz/ac1dae942d4f786f928bc9b24d50d2ebfe0aef20"
+  version "3.0.8"
+  resolved "https://codeload.github.com/anba8005/janus-gateway-js/tar.gz/d4090a490e66b479459c170baa54950a9ad1cf31"
   dependencies:
     eventemitter2 "^2.1.3"
 
