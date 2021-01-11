@@ -31,6 +31,7 @@ export default view(function GroupItem({ group }: GroupSelectorProps) {
 			group.stop();
 		} else if (group.muted) {
 			group.start();
+			group.setMuted(false);
 		} else {
 			group.setTalk(true);
 		}
