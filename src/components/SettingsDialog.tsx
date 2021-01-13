@@ -117,11 +117,7 @@ export default view(function SettingsDialog() {
 		);
 		settings.setDialogOpen(false);
 		if (root.isConnected() !== null) {
-			// connected or error
-			root.disconnect();
-			setTimeout(() => {
-				root.connect().catch(console.error);
-			}, 1000);
+			location.reload();
 		}
 	};
 	//
