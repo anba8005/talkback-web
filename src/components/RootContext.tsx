@@ -1,6 +1,7 @@
 import { createContext, FunctionalComponent, h } from 'preact';
 import { useContext, useEffect, useState } from 'preact/hooks';
 import { IntercomStore } from '../common/stores/IntercomStore';
+import { NotificationStore } from '../common/stores/NotificationStore';
 import { OffairStore } from '../common/stores/OffairStore';
 import { SettingsStore } from '../common/stores/SettingsStore';
 import { TallyStore } from '../common/stores/TallyStore';
@@ -13,10 +14,12 @@ export interface Root {
 	offair: OffairStore;
 	tally: TallyStore;
 	settings: SettingsStore;
+	notification: NotificationStore;
 	hydrate: () => Promise<void>;
 	connect: () => Promise<void>;
 	disconnect: () => void;
 	isConnected: () => boolean | null;
+	isFailed: () => boolean;
 }
 
 let root: Root;
@@ -29,10 +32,12 @@ function getRoot() {
 			offair: rootStore.offair,
 			tally: rootStore.tally,
 			settings: rootStore.settings,
+			notification: rootStore.notification,
 			hydrate: () => rootStore.hydrate(),
 			connect: () => rootStore.connect(),
 			disconnect: () => rootStore.disconnect(),
 			isConnected: () => rootStore.isConnected(),
+			isFailed: () => rootStore.isFailed(),
 		};
 	}
 	return root;
