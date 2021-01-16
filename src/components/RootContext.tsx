@@ -19,7 +19,6 @@ export interface Root {
 	connect: () => Promise<void>;
 	disconnect: () => void;
 	isConnected: () => boolean | null;
-	isFailed: () => boolean;
 }
 
 let root: Root;
@@ -37,7 +36,6 @@ function getRoot() {
 			connect: () => rootStore.connect(),
 			disconnect: () => rootStore.disconnect(),
 			isConnected: () => rootStore.isConnected(),
-			isFailed: () => rootStore.isFailed(),
 		};
 	}
 	return root;

@@ -8,7 +8,6 @@ import Participants from './Participants';
 import VisibilityChecker from './VisibilityChecker';
 import { useRootContext } from './RootContext';
 import Notifier from './Notifier';
-import ConnectionFailedListener from './ConnectionFailedListener';
 import JanusErrorListener from './JanusErrorListener';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +30,6 @@ export default view(function Root() {
 			<Intercom />
 			<Offair />
 			<Notifier />
-			<ConnectionFailedListener />
 			<JanusErrorListener />
 		</div>
 	);
