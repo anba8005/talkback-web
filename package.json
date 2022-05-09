@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"scripts": {
 		"build": "preact build --no-prerender --brotli",
-		"serve": "sirv build --port 4000 --cors --single",
+		"serve": "sirv build --port 4000 --cors --single --host",
 		"analyze": "source-map-explorer 'build/*.js'",
 		"postversion": "git push origin v$npm_package_version && git push origin master",
 		"dev": "preact watch --port 4000"
@@ -15,8 +15,8 @@
 	],
 	"browserslist": [
 		"> 1%",
-		"IE >= 9",
-		"last 2 versions"
+		"last 2 versions",
+		"not IE <= 11"
 	],
 	"dependencies": {
 		"@material-ui/core": "^4.12.4",
