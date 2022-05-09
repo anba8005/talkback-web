@@ -1,4 +1,4 @@
-import { Fab, makeStyles } from '@material-ui/core';
+import { Fab, makeStyles, Tooltip } from '@material-ui/core';
 import { view } from '@risingstack/react-easy-state';
 import { h } from 'preact';
 import RecordVoiceOverIcon from '@material-ui/icons/RecordVoiceOver';
@@ -44,22 +44,32 @@ export default view(function Controls() {
 	return (
 		<div className={classes.content}>
 			{settings.intercom && group && (
-				<Fab
-					className={classes.fab}
-					size="small"
-					onClick={handleIntercomToggle}
-				>
-					{group.muted ? <VoiceOverOffIcon /> : <RecordVoiceOverIcon />}
-				</Fab>
+				<Tooltip title={group.muted ? 'Unmute Intercom' : 'Mute Intercom'}>
+					<Fab
+						className={classes.fab}
+						size="small"
+						onClick={handleIntercomToggle}
+					>
+						{group.muted ? <VoiceOverOffIcon /> : <RecordVoiceOverIcon />}
+					</Fab>
+				</Tooltip>
 			)}
 			{settings.offair && (
-				<Fab className={classes.fab} size="small" onClick={handleOffairToggle}>
-					{offair.muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-				</Fab>
+				<Tooltip title={offair.muted ? 'Unmute Offair' : 'Mute Offair'}>
+					<Fab
+						className={classes.fab}
+						size="small"
+						onClick={handleOffairToggle}
+					>
+						{offair.muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
+					</Fab>
+				</Tooltip>
 			)}
-			<Fab className={classes.fab} size="small" onClick={handleSettingsClick}>
-				<SettingsIcon />
-			</Fab>
+			<Tooltip title="Settings">
+				<Fab className={classes.fab} size="small" onClick={handleSettingsClick}>
+					<SettingsIcon />
+				</Fab>
+			</Tooltip>
 		</div>
 	);
 });
