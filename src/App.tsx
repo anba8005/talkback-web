@@ -1,9 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import {
-	createMuiTheme,
-	CssBaseline,
-	MuiThemeProvider,
-} from '@material-ui/core';
+import { createTheme, CssBaseline, MuiThemeProvider } from '@material-ui/core';
 import { FunctionalComponent, h } from 'preact';
 import { useState } from 'preact/hooks';
 import Root from './components/Root';
@@ -14,7 +10,7 @@ import { useEffect } from 'preact/hooks';
 import Loading from './components/Loading';
 import SettingsDialog from './components/SettingsDialog';
 
-const theme = createMuiTheme({
+const theme = createTheme({
 	palette: {
 		type: 'dark',
 	},

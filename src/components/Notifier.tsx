@@ -174,8 +174,8 @@ export default memo(function Notifier() {
 			}}
 			open={open}
 			autoHideDuration={autoHideDuration}
+			TransitionProps={{ onExited: handleExited }}
 			onClose={handleClose}
-			onExited={handleExited}
 		>
 			<SnackbarContent
 				className={clsx(getTypeClasses(type), classes.content)}
