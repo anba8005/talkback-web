@@ -1,0 +1,28 @@
+keepalive_timeout ${KEEPALIVE_TIMEOUT};
+keepalive_requests ${KEEPALIVE_REQUESTS};
+
+server {
+    listen       80;
+
+    access_log ${ACCESS_LOG};
+
+    if ($http_x_forwarded_proto = "http") {
+        return 301 https://$host$request_uri;
+    }
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+        try_files $uri $uri/ /index.html;                 
+    }
+
+	location ~* \.(jpg|jpeg|png|webp|gif|ico|css|js|map)$ {
+        root   /usr/share/nginx/html;
+        try_files $uri =404;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}

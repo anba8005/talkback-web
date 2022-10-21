@@ -1,0 +1,41 @@
+steps:
+  - name: "gcr.io/cloud-builders/curl"
+    args:
+      [
+        "-X",
+        "POST",
+        "-H",
+        "Content-type: application/json",
+        "--data",
+        '{"text":"`talkback-web:$_TAG-$SHORT_SHA` build started!"}',
+        "${_WEBHOOK_URL}",
+      ]
+  - name: "gcr.io/cloud-builders/git"
+    entrypoint: "bash"
+    env: ["GIT_DISCOVERY_ACROSS_FILESYSTEM=1"]
+    args:
+      - "-c"
+      - |
+        git clone https://source.developers.google.com/p/$PROJECT_ID/r/github_anba8005_talkback-common src/common
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: sh
+    args:
+      [
+        "-c",
+        "docker build -t eu.gcr.io/$PROJECT_ID/talkback-web:$(date -u +$_TAG-$SHORT_SHA-%Y%m%d%H%M%S) .",
+      ]
+  - name: "gcr.io/cloud-builders/curl"
+    args:
+      [
+        "-X",
+        "POST",
+        "-H",
+        "Content-type: application/json",
+        "--data",
+        '{"text":"`talkback-web:$_TAG-$SHORT_SHA` build completed!"}',
+        "${_WEBHOOK_URL}",
+      ]
+substitutions:
+  _TAG: $TAG_NAME
+images:
+  - "eu.gcr.io/$PROJECT_ID/talkback-web"
