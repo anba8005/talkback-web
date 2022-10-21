@@ -16,7 +16,7 @@ export class RootStore extends AbstractRootStore {
 }
 
 export function createRootStore(): RootStore {
-	const sessionService = new SessionService();
+	const sessionService = new SessionService({ setTimeout, clearTimeout });
 	const streamingService = new StreamingService(sessionService);
 	const persister = new LocalStorageSettingsPersister();
 	const tallyService = new StreamingService(sessionService);
