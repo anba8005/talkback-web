@@ -3,6 +3,7 @@ import { StreamingService } from '../common/services/StreamingService';
 import { AbstractRootStore } from '../common/stores/AbstractRootStore';
 import { SettingsPersister } from '../common/stores/SettingsStore';
 import { LocalStorageSettingsPersister } from '../utils/LocalStorageSettingsPersister';
+import { createTimeoutHandler } from '../utils/TimeoutHandler';
 
 export class RootStore extends AbstractRootStore {
 	constructor(
@@ -16,7 +17,7 @@ export class RootStore extends AbstractRootStore {
 }
 
 export function createRootStore(): RootStore {
-	const sessionService = new SessionService({ setTimeout, clearTimeout });
+	const sessionService = new SessionService(createTimeoutHandler());
 	const streamingService = new StreamingService(sessionService);
 	const persister = new LocalStorageSettingsPersister();
 	const tallyService = new StreamingService(sessionService);
